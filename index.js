@@ -48,16 +48,16 @@ async function run() {
   
 
     app.get('/scoreboard/:matchId', async (req, res) => {
-      const matchId = req.params.matchId;
-
+      const matchId = parseInt(req.params.matchId);
+    
       try {
-        const result = await scoreboardCollection.findOne({ "matches.matchId": matchId });
-
+        const result = await scoreboardCollection.findOne({ "matchId": matchId });
+    
         if (!result) {
           res.status(404).send("Match not found");
           return;
         }
-
+    
         res.send(result);
       } catch (error) {
         console.error('Error fetching match data:', error);
