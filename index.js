@@ -37,27 +37,34 @@ async function run() {
 
     const scoreboardCollection = client.db('ScoreBoard').collection('ScoreBoard1');
 
-
     app.get('/scoreboard', async (req, res) => {
       const cursor = scoreboardCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     })
 
+    const upcomingCollection = client.db('ScoreBoard').collection('upcomings');
+    app.get('/upcomings', async (req, res) => {
+      const cursor = upcomingCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
-  
+
+
+
 
     app.get('/scoreboard/:matchId', async (req, res) => {
       const matchId = parseInt(req.params.matchId);
-    
+
       try {
         const result = await scoreboardCollection.findOne({ "matchId": matchId });
-    
+
         if (!result) {
           res.status(404).send("Match not found");
           return;
         }
-    
+
         res.send(result);
       } catch (error) {
         console.error('Error fetching match data:', error);
