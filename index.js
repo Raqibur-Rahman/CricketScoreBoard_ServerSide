@@ -60,7 +60,7 @@ async function run() {
 
 
     const rankingCollection = client.db('ScoreBoard').collection('ranking');
-    app.get('/teamdata', async (req, res) => {
+    app.get('/ranking', async (req, res) => {
       const cursor = rankingCollection.find();
       const result = await cursor.toArray();
       res.send(result);
