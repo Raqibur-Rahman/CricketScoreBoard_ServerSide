@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT||5000;
+const port = process.env.PORT || 5000;
 require('dotenv').config();
 
 
@@ -38,16 +38,32 @@ async function run() {
     const scoreboardCollection = client.db('ScoreBoard').collection('ScoreBoard1');
 
 
-    app.get('/scoreboard', async(req,res)=>{
-        const cursor = scoreboardCollection.find();
-        const result= await cursor.toArray();
-        res.send(result);
+    app.get('/scoreboard', async (req, res) => {
+      const cursor = scoreboardCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     })
 
 
+  
 
+    app.get('/scoreboard/:matchId', async (req, res) => {
+      const matchId = req.params.matchId;
 
+      try {
+        const result = await scoreboardCollection.findOne({ "matches.matchId": matchId });
 
+        if (!result) {
+          res.status(404).send("Match not found");
+          return;
+        }
+
+        res.send(result);
+      } catch (error) {
+        console.error('Error fetching match data:', error);
+        res.status(500).send("Internal Server Error");
+      }
+    });
 
 
 
@@ -67,10 +83,10 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req, res)=>{
-    res.send('Running');
+app.get('/', (req, res) => {
+  res.send('Running');
 })
 
-app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`)
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
