@@ -67,6 +67,14 @@ async function run() {
     })
 
 
+    const newsCollection = client.db('ScoreBoard').collection('news');
+    app.get('/news', async (req, res) => {
+      const cursor = newsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
 
 
 
