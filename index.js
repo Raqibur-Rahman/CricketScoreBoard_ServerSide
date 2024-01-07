@@ -51,6 +51,14 @@ async function run() {
     })
 
 
+    const teamCollection = client.db('ScoreBoard').collection('teamdata');
+    app.get('/teamdata', async (req, res) => {
+      const cursor = teamCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
 
 
 
